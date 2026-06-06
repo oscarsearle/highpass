@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="">
+    <meta name="theme-color" content="#11120D">
+    <meta property="og:site_name" content="HIGHPASS">
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
@@ -307,9 +308,14 @@
       {{ 'accessibility.skip_to_text' | t }}
     </a>
 
-    {%- comment -%} HIGHPASS minimal navigation {%- endcomment -%}
+    {%- comment -%} HIGHPASS navigation {%- endcomment -%}
     <nav class="hp-nav" role="navigation" aria-label="Main navigation">
-      <a class="hp-nav__logo" href="{{ routes.root_url }}">HIGHPASS</a>
+      <a class="hp-nav__brand" href="{{ routes.root_url }}" aria-label="HIGHPASS home">
+        <svg class="hp-nav__mark" viewBox="0 0 40 24" fill="none" aria-hidden="true">
+          <polyline points="0,24 14,4 20,14 28,2 40,24" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+        </svg>
+        <span class="hp-nav__wordmark">HIGHPASS</span>
+      </a>
       <div class="hp-nav__links">
         <a class="hp-nav__link" href="{{ routes.all_products_collection_url }}">Shop</a>
         {%- if settings.cart_type != 'drawer' -%}
@@ -330,19 +336,24 @@
 
     {%- comment -%} HIGHPASS footer {%- endcomment -%}
     <footer class="hp-footer" role="contentinfo">
-      <div>
-        <span class="hp-footer__label">HIGHPASS</span>
-        <p class="hp-footer__text">Premium cycling accessories.<br>Wanaka, New Zealand.</p>
+      <div class="hp-footer__brand">
+        <span class="hp-footer__wordmark">HIGHPASS</span>
+        <p class="hp-footer__tagline">Premium cycling accessories.<br>Wanaka, New Zealand.</p>
       </div>
       <div>
-        <span class="hp-footer__label">Shop</span>
-        <a class="hp-footer__link" href="{{ routes.all_products_collection_url }}">FLOW 1 — Electric Pump</a>
+        <p class="hp-footer__col-title">Shop</p>
+        <a class="hp-footer__link" href="{{ routes.all_products_collection_url }}">FLOW 1: Electric Pump</a>
       </div>
       <div>
-        <span class="hp-footer__label">Info</span>
+        <p class="hp-footer__col-title">Info</p>
         <a class="hp-footer__link" href="/pages/shipping">Shipping</a>
         <a class="hp-footer__link" href="/policies/refund-policy">Returns</a>
+        <a class="hp-footer__link" href="/pages/faq">FAQ</a>
         <a class="hp-footer__link" href="/pages/contact">Contact</a>
+      </div>
+      <div class="hp-footer__bottom">
+        <p class="hp-footer__copy">&copy; {{ 'now' | date: '%Y' }} HIGHPASS. All rights reserved.</p>
+        <p class="hp-footer__copy">Wanaka, New Zealand</p>
       </div>
     </footer>
 

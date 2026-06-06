@@ -1,119 +1,181 @@
-{{ 'highpass.css' | asset_url | stylesheet_tag }}
+<div class="hp-product" itemscope itemtype="https://schema.org/Product">
 
-<div class="hp-product">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "description": {{ product.description | strip_html | truncatewords: 120 | json }},
+    "brand": { "@type": "Brand", "name": "HIGHPASS" },
+    "image": [
+      {%- for media in product.media -%}
+        {%- if media.media_type == 'image' -%}
+          {{ media | image_url: width: 1200 | json }}{% unless forloop.last %},{% endunless %}
+        {%- endif -%}
+      {%- endfor -%}
+    ],
+    "offers": {
+      "@type": "Offer",
+      "url": {{ product.url | prepend: request.origin | json }},
+      "priceCurrency": "NZD",
+      "price": {{ product.price | divided_by: 100.0 }},
+      "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+      "seller": { "@type": "Organization", "name": "HIGHPASS" }
+    }
+  }
+  </script>
 
-  {%- comment -%} ===== OVERVIEW: Gallery + Info ===== {%- endcomment -%}
+  {%- comment -%} OVERVIEW: gallery left + info right {%- endcomment -%}
   <div class="hp-product__overview">
 
-    {%- comment -%} --- Image Gallery --- {%- endcomment -%}
+    {%- comment -%} Gallery {%- endcomment -%}
     <div class="hp-gallery">
       <div class="hp-gallery__rail" id="hp-gallery-rail">
+        {%- assign image_count = 0 -%}
         {%- for media in product.media -%}
           {%- if media.media_type == 'image' -%}
+            {%- assign image_count = image_count | plus: 1 -%}
             <img
-              class="hp-gallery__image{% if forloop.first %} active{% endif %}"
+              class="hp-gallery__img{% if forloop.first %} active{% endif %}"
               src="{{ media | image_url: width: 1400 }}"
-              alt="{{ media.alt | escape }}"
+              srcset="{{ media | image_url: width: 600 }} 600w, {{ media | image_url: width: 1000 }} 1000w, {{ media | image_url: width: 1400 }} 1400w"
+              sizes="(max-width: 900px) 100vw, 55vw"
+              alt="{{ media.alt | default: product.title | escape }}"
               width="{{ media.width }}"
               height="{{ media.height }}"
               loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
               data-index="{{ forloop.index0 }}"
+              itemprop="image"
             >
           {%- endif -%}
         {%- endfor -%}
 
-        {%- comment -%} Arrow navigation {%- endcomment -%}
-        <button class="hp-gallery__arrow hp-gallery__arrow--prev" aria-label="Previous image" id="hp-gallery-prev">
-          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        <button class="hp-gallery__arrow hp-gallery__arrow--next" aria-label="Next image" id="hp-gallery-next">
-          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
+        {%- if image_count == 0 -%}
+          <div class="hp-gallery__placeholder">
+            <svg class="hp-gallery__placeholder-icon" viewBox="0 0 48 48" stroke="currentColor" stroke-width="1" fill="none">
+              <rect x="4" y="10" width="40" height="28" rx="2"/>
+              <circle cx="17" cy="22" r="4"/>
+              <polyline points="4,38 16,26 24,34 32,24 44,38"/>
+            </svg>
+            <span class="hp-gallery__placeholder-text">Add product photos in Shopify admin</span>
+          </div>
+        {%- endif -%}
+
+        {%- if image_count > 1 -%}
+          <button class="hp-gallery__arrow hp-gallery__arrow--prev" aria-label="Previous image" id="hp-gallery-prev">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="hp-gallery__arrow hp-gallery__arrow--next" aria-label="Next image" id="hp-gallery-next">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        {%- endif -%}
       </div>
 
-      {%- comment -%} Thumbnails {%- endcomment -%}
-      <div class="hp-gallery__thumbnails" id="hp-gallery-thumbs">
-        {%- for media in product.media -%}
-          {%- if media.media_type == 'image' -%}
-            <img
-              class="hp-gallery__thumb{% if forloop.first %} active{% endif %}"
-              src="{{ media | image_url: width: 120 }}"
-              alt="{{ media.alt | escape }}"
-              loading="lazy"
-              data-index="{{ forloop.index0 }}"
-            >
-          {%- endif -%}
-        {%- endfor -%}
-      </div>
+      {%- if image_count > 1 -%}
+        <div class="hp-gallery__thumbs" id="hp-gallery-thumbs">
+          {%- for media in product.media -%}
+            {%- if media.media_type == 'image' -%}
+              <img
+                class="hp-gallery__thumb{% if forloop.first %} active{% endif %}"
+                src="{{ media | image_url: width: 120 }}"
+                alt="{{ media.alt | default: product.title | escape }}"
+                loading="lazy"
+                data-index="{{ forloop.index0 }}"
+              >
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
     </div>
 
-    {%- comment -%} --- Product Info Panel --- {%- endcomment -%}
+    {%- comment -%} Info panel {%- endcomment -%}
     <div class="hp-product__info">
 
-      {%- comment -%} Name {%- endcomment -%}
       <div>
-        <h1 class="hp-product__name">{{ product.title }}</h1>
+        <p class="hp-product__eyebrow" itemprop="brand">HIGHPASS</p>
+        <h1 class="hp-product__name" itemprop="name">{{ product.title }}</h1>
         {%- if section.settings.tagline != blank -%}
           <p class="hp-product__tagline">{{ section.settings.tagline }}</p>
         {%- endif -%}
       </div>
 
-      {%- comment -%} Description {%- endcomment -%}
       {%- if product.description != blank -%}
-        <p class="hp-product__description">{{ product.description | strip_html | truncatewords: 80 }}</p>
+        <div class="hp-product__desc" itemprop="description">{{ product.description | strip_html | truncatewords: 60 }}</div>
       {%- endif -%}
 
       {%- comment -%} Specs table {%- endcomment -%}
-      {%- if section.blocks.size > 0 -%}
+      {%- assign spec_count = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'spec' -%}{%- assign spec_count = spec_count | plus: 1 -%}{%- endif -%}
+      {%- endfor -%}
+
+      {%- if spec_count > 0 -%}
         <div class="hp-specs">
           {%- for block in section.blocks -%}
             {%- if block.type == 'spec' -%}
-              <div class="hp-specs__row" {{ block.shopify_attributes }}>
-                <span class="hp-specs__label">{{ block.settings.label }}</span>
-                <span class="hp-specs__value">{{ block.settings.value }}</span>
+              <div class="hp-spec" {{ block.shopify_attributes }}>
+                <span class="hp-spec__label">{{ block.settings.label }}</span>
+                <span class="hp-spec__value">{{ block.settings.value }}</span>
               </div>
             {%- endif -%}
           {%- endfor -%}
         </div>
       {%- endif -%}
 
-      {%- comment -%} Price + Add to cart {%- endcomment -%}
+      {%- comment -%} Price + Add to Cart {%- endcomment -%}
       {%- form 'product', product, id: 'hp-product-form', novalidate: 'novalidate' -%}
         <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
-        <div>
-          <div class="hp-product__price">
-            {{ product.selected_or_first_available_variant.price | money }}
-            {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
-              <span class="hp-product__price--compare">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
-            {%- endif -%}
-          </div>
+        <div class="hp-product__price-row" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+          <meta itemprop="priceCurrency" content="NZD">
+          <meta itemprop="price" content="{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}">
+          <span class="hp-product__price">{{ product.selected_or_first_available_variant.price | money }}</span>
+          {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+            <span class="hp-product__price--was">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+          {%- endif -%}
         </div>
 
         <button
           type="submit"
           name="add"
-          class="hp-btn"
-          {%- unless product.selected_or_first_available_variant.available -%}disabled{%- endunless -%}
+          class="hp-btn hp-btn--primary hp-btn--full"
+          {%- unless product.selected_or_first_available_variant.available %} disabled{%- endunless -%}
         >
-          {%- if product.selected_or_first_available_variant.available -%}
-            Add to cart
-          {%- else -%}
-            Sold out
-          {%- endif -%}
+          {%- if product.selected_or_first_available_variant.available -%}Add to cart{%- else -%}Sold out{%- endif -%}
         </button>
-
       {%- endform -%}
+
+      {%- comment -%} Trust badges {%- endcomment -%}
+      <div class="hp-product__trust">
+        <span class="hp-trust-item">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M8 1L6 6H1L5 9.2L3.5 14L8 11L12.5 14L11 9.2L15 6H10Z"/>
+          </svg>
+          Free NZ delivery
+        </span>
+        <span class="hp-trust-item">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M13 2L6 11 3 8"/>
+            <circle cx="8" cy="8" r="7"/>
+          </svg>
+          30-day returns
+        </span>
+        <span class="hp-trust-item">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="7" width="12" height="8" rx="1"/>
+            <path d="M5 7V5a3 3 0 0 1 6 0v2"/>
+          </svg>
+          Secure checkout
+        </span>
+      </div>
 
     </div>
   </div>
 
-  {%- comment -%} ===== FEATURE SECTIONS (expandable, Thuono-style) ===== {%- endcomment -%}
+  {%- comment -%} FEATURE SECTIONS (expandable accordion) {%- endcomment -%}
   {%- assign has_features = false -%}
   {%- for block in section.blocks -%}
-    {%- if block.type == 'feature' -%}
-      {%- assign has_features = true -%}
-    {%- endif -%}
+    {%- if block.type == 'feature' -%}{%- assign has_features = true -%}{%- endif -%}
   {%- endfor -%}
 
   {%- if has_features -%}
@@ -122,14 +184,14 @@
         {%- if block.type == 'feature' -%}
           <div class="hp-feature" {{ block.shopify_attributes }}>
             <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
-              <h3 class="hp-feature__title">{{ block.settings.title }}</h3>
+              <h3 class="hp-feature__title">{{ block.settings.title | upcase }}</h3>
               <span class="hp-feature__toggle" aria-hidden="true">+</span>
             </div>
             <div class="hp-feature__body">
               <p class="hp-feature__text">{{ block.settings.description }}</p>
               {%- if block.settings.image != blank -%}
                 <img
-                  class="hp-feature__image"
+                  class="hp-feature__img"
                   src="{{ block.settings.image | image_url: width: 240 }}"
                   alt="{{ block.settings.title | escape }}"
                   loading="lazy"
@@ -144,63 +206,64 @@
 
 </div>
 
-{%- comment -%} ===== JAVASCRIPT ===== {%- endcomment -%}
 <script>
 (function() {
-  // Gallery
-  const images = document.querySelectorAll('.hp-gallery__image');
-  const thumbs = document.querySelectorAll('.hp-gallery__thumb');
-  let current = 0;
+  'use strict';
 
-  function goTo(index) {
+  // Gallery
+  var images = Array.from(document.querySelectorAll('.hp-gallery__img'));
+  var thumbs = Array.from(document.querySelectorAll('.hp-gallery__thumb'));
+  var current = 0;
+
+  function goTo(idx) {
+    if (!images.length) return;
     images[current].classList.remove('active');
-    thumbs[current] && thumbs[current].classList.remove('active');
-    current = (index + images.length) % images.length;
+    if (thumbs[current]) thumbs[current].classList.remove('active');
+    current = ((idx % images.length) + images.length) % images.length;
     images[current].classList.add('active');
-    thumbs[current] && thumbs[current].classList.add('active');
+    if (thumbs[current]) thumbs[current].classList.add('active');
   }
 
   thumbs.forEach(function(thumb) {
-    thumb.addEventListener('click', function() {
-      goTo(parseInt(this.dataset.index));
-    });
+    thumb.addEventListener('click', function() { goTo(parseInt(this.dataset.index, 10)); });
   });
 
-  const prev = document.getElementById('hp-gallery-prev');
-  const next = document.getElementById('hp-gallery-next');
-  prev && prev.addEventListener('click', function() { goTo(current - 1); });
-  next && next.addEventListener('click', function() { goTo(current + 1); });
+  var prevBtn = document.getElementById('hp-gallery-prev');
+  var nextBtn = document.getElementById('hp-gallery-next');
+  if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); });
+  if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); });
 
-  // Touch swipe on gallery
-  let touchStartX = 0;
-  const rail = document.getElementById('hp-gallery-rail');
+  // Touch swipe
+  var touchStartX = 0;
+  var rail = document.getElementById('hp-gallery-rail');
   if (rail) {
     rail.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
     rail.addEventListener('touchend', function(e) {
-      const diff = touchStartX - e.changedTouches[0].clientX;
+      var diff = touchStartX - e.changedTouches[0].clientX;
       if (Math.abs(diff) > 40) { diff > 0 ? goTo(current + 1) : goTo(current - 1); }
     });
   }
 
-  // Feature sections expand/collapse
+  // Feature accordion
   document.querySelectorAll('.hp-feature__head').forEach(function(head) {
-    head.addEventListener('click', function() {
-      const feature = this.closest('.hp-feature');
-      const isOpen = feature.classList.contains('open');
+    function toggle() {
+      var feature = head.closest('.hp-feature');
+      var isOpen = feature.classList.contains('open');
       feature.classList.toggle('open', !isOpen);
-      this.setAttribute('aria-expanded', !isOpen);
-    });
+      head.setAttribute('aria-expanded', String(!isOpen));
+    }
+    head.addEventListener('click', toggle);
     head.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
   });
 
-  // Nav scroll behaviour
-  const nav = document.querySelector('.hp-nav');
+  // Nav scroll state
+  var nav = document.querySelector('.hp-nav');
   if (nav) {
-    window.addEventListener('scroll', function() {
-      nav.classList.toggle('scrolled', window.scrollY > 10);
-    }, { passive: true });
+    var onScroll = function() { nav.classList.toggle('is-scrolled', window.scrollY > 10); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   }
 })();
 </script>
@@ -222,41 +285,17 @@
       "type": "spec",
       "name": "Spec row",
       "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Spec label",
-          "default": "Max Pressure"
-        },
-        {
-          "type": "text",
-          "id": "value",
-          "label": "Spec value",
-          "default": "120 PSI"
-        }
+        { "type": "text", "id": "label", "label": "Spec label", "default": "Max Pressure" },
+        { "type": "text", "id": "value", "label": "Spec value", "default": "120 PSI" }
       ]
     },
     {
       "type": "feature",
       "name": "Feature section",
       "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Feature title",
-          "default": "Precision inflation: auto-stop technology"
-        },
-        {
-          "type": "textarea",
-          "id": "description",
-          "label": "Feature description",
-          "default": "Describe this feature in detail."
-        },
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Feature illustration (optional)"
-        }
+        { "type": "text", "id": "title", "label": "Feature title", "default": "Precision inflation: auto-stop technology" },
+        { "type": "textarea", "id": "description", "label": "Feature description", "default": "Describe this feature in detail." },
+        { "type": "image_picker", "id": "image", "label": "Feature illustration (optional)" }
       ]
     }
   ],
@@ -282,7 +321,7 @@
           "type": "feature",
           "settings": {
             "title": "120 PSI brushless motor",
-            "description": "The FLOW 1 runs a brushless DC motor rated to 120 PSI — enough for road tyres, gravel, and hardtail MTB. A standard 29\" mountain bike tyre inflates in under 90 seconds. Brushless means longer motor life, quieter operation, and less heat than conventional pump motors."
+            "description": "The FLOW 1 runs a brushless DC motor rated to 120 PSI, enough for road tyres, gravel, and hardtail MTB. A standard 29-inch mountain bike tyre inflates in under 90 seconds. Brushless means longer motor life, quieter operation, and less heat than conventional pump motors."
           }
         },
         {
@@ -296,7 +335,7 @@
           "type": "feature",
           "settings": {
             "title": "Universal valve compatibility",
-            "description": "The FLOW 1 works with both Schrader and Presta valves — the two standards used across road bikes, mountain bikes, gravel bikes, and e-bikes. Switch between valve types in seconds. No adaptor hunting, no separate purchase."
+            "description": "The FLOW 1 works with both Schrader and Presta valves, the two standards used across road bikes, mountain bikes, gravel bikes, and e-bikes. Switch between valve types in seconds. No adaptor hunting, no separate purchase."
           }
         }
       ]

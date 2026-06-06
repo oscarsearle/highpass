@@ -1,0 +1,167 @@
+<section class="hp-faq-page">
+  <div class="hp-faq-page__header">
+    <h1 class="hp-faq-page__title">FAQ</h1>
+    <p class="hp-faq-page__sub">Common questions about the HIGHPASS FLOW 1. If you need something that's not here, <a href="/pages/contact">contact us</a>.</p>
+  </div>
+
+  <div class="hp-features">
+
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'faq' -%}
+          <div class="hp-feature" {{ block.shopify_attributes }}>
+            <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+              <h2 class="hp-feature__title">{{ block.settings.question }}</h2>
+              <span class="hp-feature__toggle" aria-hidden="true">+</span>
+            </div>
+            <div class="hp-feature__body">
+              <p class="hp-feature__text">{{ block.settings.answer }}</p>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+
+      <div class="hp-feature">
+        <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+          <h2 class="hp-feature__title">How does the auto-stop feature work?</h2>
+          <span class="hp-feature__toggle" aria-hidden="true">+</span>
+        </div>
+        <div class="hp-feature__body">
+          <p class="hp-feature__text">When you set your target PSI on the FLOW 1, the onboard sensor continuously monitors tyre pressure and cuts the motor the moment it reaches your preset point. No guesswork, no over-inflation, no checking the gauge.</p>
+        </div>
+      </div>
+
+      <div class="hp-feature">
+        <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+          <h2 class="hp-feature__title">What valve types does the FLOW 1 work with?</h2>
+          <span class="hp-feature__toggle" aria-hidden="true">+</span>
+        </div>
+        <div class="hp-feature__body">
+          <p class="hp-feature__text">The FLOW 1 works with both Schrader and Presta valves, the two standards used across road, gravel, mountain, and e-bikes. Switching between them takes seconds. No adaptor required, no separate purchase.</p>
+        </div>
+      </div>
+
+      <div class="hp-feature">
+        <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+          <h2 class="hp-feature__title">How many inflations do I get per charge?</h2>
+          <span class="hp-feature__toggle" aria-hidden="true">+</span>
+        </div>
+        <div class="hp-feature__body">
+          <p class="hp-feature__text">20 or more full inflations from a single charge. A typical trail ride uses one or two, so one charge comfortably covers a full week of daily riding. Charge it Sunday night; you won't think about it again until the following Sunday.</p>
+        </div>
+      </div>
+
+      <div class="hp-feature">
+        <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+          <h2 class="hp-feature__title">How long does charging take?</h2>
+          <span class="hp-feature__toggle" aria-hidden="true">+</span>
+        </div>
+        <div class="hp-feature__body">
+          <p class="hp-feature__text">Under two hours via USB-C. Any standard USB-C cable and charger works. No proprietary connector, no special adapter.</p>
+        </div>
+      </div>
+
+      <div class="hp-feature">
+        <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+          <h2 class="hp-feature__title">How long does it take to inflate a tyre?</h2>
+          <span class="hp-feature__toggle" aria-hidden="true">+</span>
+        </div>
+        <div class="hp-feature__body">
+          <p class="hp-feature__text">A standard 29-inch mountain bike tyre inflates from flat to full in under 90 seconds. Road tyres are faster due to smaller volume. Exact time varies based on starting pressure, tyre size, and target PSI.</p>
+        </div>
+      </div>
+
+      <div class="hp-feature">
+        <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+          <h2 class="hp-feature__title">How do I order?</h2>
+          <span class="hp-feature__toggle" aria-hidden="true">+</span>
+        </div>
+        <div class="hp-feature__body">
+          <p class="hp-feature__text">Order directly from this website. Add to cart, check out securely, and we'll ship from New Zealand within 1 to 3 business days. Delivery nationwide takes a further 2 to 5 business days depending on your location.</p>
+        </div>
+      </div>
+
+      <div class="hp-feature">
+        <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+          <h2 class="hp-feature__title">What is your returns policy?</h2>
+          <span class="hp-feature__toggle" aria-hidden="true">+</span>
+        </div>
+        <div class="hp-feature__body">
+          <p class="hp-feature__text">If the FLOW 1 is not right for you, we accept returns within 30 days of delivery, provided the product is unused and in its original packaging. Contact us to arrange a return and we'll send you a prepaid return label.</p>
+        </div>
+      </div>
+
+      <div class="hp-feature">
+        <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+          <h2 class="hp-feature__title">Do you ship outside New Zealand?</h2>
+          <span class="hp-feature__toggle" aria-hidden="true">+</span>
+        </div>
+        <div class="hp-feature__body">
+          <p class="hp-feature__text">Not yet. HIGHPASS currently ships within New Zealand only. International orders are coming. If you're based overseas and keen to order, send us a message and we'll add you to the list.</p>
+        </div>
+      </div>
+
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+(function() {
+  'use strict';
+
+  document.querySelectorAll('.hp-feature__head').forEach(function(head) {
+    function toggle() {
+      var feature = head.closest('.hp-feature');
+      var isOpen = feature.classList.contains('open');
+      feature.classList.toggle('open', !isOpen);
+      head.setAttribute('aria-expanded', String(!isOpen));
+    }
+    head.addEventListener('click', toggle);
+    head.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  var nav = document.querySelector('.hp-nav');
+  if (nav) {
+    var onScroll = function() { nav.classList.toggle('is-scrolled', window.scrollY > 10); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HIGHPASS FAQ",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "How does the auto-stop feature work?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Enter the answer here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HIGHPASS FAQ"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "highpass_faq": {
+      "type": "highpass-faq",
+      "settings": {}
+    }
+  },
+  "order": ["highpass_faq"]
+}

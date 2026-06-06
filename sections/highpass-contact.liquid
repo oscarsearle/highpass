@@ -1,0 +1,86 @@
+<section class="hp-contact" aria-label="Contact">
+  <h1 class="hp-contact__title">CONTACT</h1>
+  <p class="hp-contact__sub">Got a question about the FLOW 1? We respond within one business day.</p>
+
+  {%- form 'contact', id: 'hp-contact-form' -%}
+
+    {%- if form.posted_successfully? -%}
+      <p class="hp-contact__success">Message received. We'll be in touch shortly.</p>
+    {%- else -%}
+
+      {%- if form.errors -%}
+        <p class="hp-contact__error">Please check the following fields and try again: {{ form.errors.translated_fields | join: ', ' }}.</p>
+      {%- endif -%}
+
+      <div class="hp-form-field">
+        <label class="hp-form-label" for="ContactName">Name</label>
+        <input
+          class="hp-form-input"
+          type="text"
+          id="ContactName"
+          name="contact[name]"
+          autocomplete="name"
+          value="{{ form.name }}"
+          required
+        >
+      </div>
+
+      <div class="hp-form-field">
+        <label class="hp-form-label" for="ContactEmail">Email</label>
+        <input
+          class="hp-form-input"
+          type="email"
+          id="ContactEmail"
+          name="contact[email]"
+          autocomplete="email"
+          value="{{ form.email }}"
+          required
+        >
+      </div>
+
+      <div class="hp-form-field">
+        <label class="hp-form-label" for="ContactMessage">Message</label>
+        <textarea
+          class="hp-form-textarea"
+          id="ContactMessage"
+          name="contact[body]"
+          rows="6"
+          required
+        >{{ form.body }}</textarea>
+      </div>
+
+      <button type="submit" class="hp-btn hp-btn--primary hp-btn--full">Send message</button>
+
+    {%- endif -%}
+
+  {%- endform -%}
+
+  <div class="hp-contact__alt">
+    Or email directly: <a href="mailto:hello@highpass.nz">hello@highpass.nz</a>
+  </div>
+</section>
+
+<script>
+(function() {
+  'use strict';
+  var nav = document.querySelector('.hp-nav');
+  if (nav) {
+    var onScroll = function() { nav.classList.toggle('is-scrolled', window.scrollY > 10); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HIGHPASS Contact",
+  "tag": "section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "HIGHPASS Contact"
+    }
+  ]
+}
+{% endschema %}
