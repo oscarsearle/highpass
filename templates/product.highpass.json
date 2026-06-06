@@ -1,0 +1,94 @@
+{
+  "sections": {
+    "highpass_product": {
+      "type": "highpass-product",
+      "settings": {
+        "tagline": "Wanaka-born. Trail-tested."
+      },
+      "blocks": {
+        "spec_1": {
+          "type": "spec",
+          "settings": {
+            "label": "Max Pressure",
+            "value": "120 PSI"
+          }
+        },
+        "spec_2": {
+          "type": "spec",
+          "settings": {
+            "label": "Motor",
+            "value": "Brushless DC"
+          }
+        },
+        "spec_3": {
+          "type": "spec",
+          "settings": {
+            "label": "Charging",
+            "value": "USB-C"
+          }
+        },
+        "spec_4": {
+          "type": "spec",
+          "settings": {
+            "label": "Inflations per charge",
+            "value": "20+"
+          }
+        },
+        "spec_5": {
+          "type": "spec",
+          "settings": {
+            "label": "Valves",
+            "value": "Schrader, Presta"
+          }
+        },
+        "spec_6": {
+          "type": "spec",
+          "settings": {
+            "label": "Auto-stop",
+            "value": "Yes"
+          }
+        },
+        "spec_7": {
+          "type": "spec",
+          "settings": {
+            "label": "Price",
+            "value": "$99.99 NZD"
+          }
+        },
+        "feature_1": {
+          "type": "feature",
+          "settings": {
+            "title": "Precision inflation: auto-stop technology",
+            "description": "Set your target PSI and the FLOW 1 stops itself. No guesswork, no over-inflation, no fumbling with a gauge at the trailhead. The auto-stop sensor reads pressure continuously and cuts the motor at exactly your preset point. Inflate, clip in, ride."
+          }
+        },
+        "feature_2": {
+          "type": "feature",
+          "settings": {
+            "title": "120 PSI brushless motor",
+            "description": "The FLOW 1 runs a brushless DC motor rated to 120 PSI — enough for road tyres, gravel, and hardtail MTB. A standard 29\" mountain bike tyre inflates in under 90 seconds. Brushless means longer motor life, quieter operation, and less heat than conventional pump motors."
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "title": "USB-C rechargeable: 20+ inflations per charge",
+            "description": "One charge handles a full week of riding. The built-in battery recharges via USB-C in under two hours and delivers 20 or more full inflations before it needs power again. Charge it on Sunday night. Don't think about it until next Sunday."
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "title": "Universal valve compatibility",
+            "description": "The FLOW 1 works with both Schrader and Presta valves — the two standards used across road bikes, mountain bikes, gravel bikes, and e-bikes. Switch between valve types in seconds. No adaptor hunting, no separate purchase."
+          }
+        }
+      },
+      "block_order": [
+        "spec_1", "spec_2", "spec_3", "spec_4", "spec_5", "spec_6", "spec_7",
+        "feature_1", "feature_2", "feature_3", "feature_4"
+      ]
+    }
+  },
+  "order": ["highpass_product"]
+}

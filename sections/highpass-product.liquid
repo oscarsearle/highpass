@@ -1,0 +1,306 @@
+{{ 'highpass.css' | asset_url | stylesheet_tag }}
+
+<div class="hp-product">
+
+  {%- comment -%} ===== OVERVIEW: Gallery + Info ===== {%- endcomment -%}
+  <div class="hp-product__overview">
+
+    {%- comment -%} --- Image Gallery --- {%- endcomment -%}
+    <div class="hp-gallery">
+      <div class="hp-gallery__rail" id="hp-gallery-rail">
+        {%- for media in product.media -%}
+          {%- if media.media_type == 'image' -%}
+            <img
+              class="hp-gallery__image{% if forloop.first %} active{% endif %}"
+              src="{{ media | image_url: width: 1400 }}"
+              alt="{{ media.alt | escape }}"
+              width="{{ media.width }}"
+              height="{{ media.height }}"
+              loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              data-index="{{ forloop.index0 }}"
+            >
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- comment -%} Arrow navigation {%- endcomment -%}
+        <button class="hp-gallery__arrow hp-gallery__arrow--prev" aria-label="Previous image" id="hp-gallery-prev">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="hp-gallery__arrow hp-gallery__arrow--next" aria-label="Next image" id="hp-gallery-next">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+
+      {%- comment -%} Thumbnails {%- endcomment -%}
+      <div class="hp-gallery__thumbnails" id="hp-gallery-thumbs">
+        {%- for media in product.media -%}
+          {%- if media.media_type == 'image' -%}
+            <img
+              class="hp-gallery__thumb{% if forloop.first %} active{% endif %}"
+              src="{{ media | image_url: width: 120 }}"
+              alt="{{ media.alt | escape }}"
+              loading="lazy"
+              data-index="{{ forloop.index0 }}"
+            >
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- comment -%} --- Product Info Panel --- {%- endcomment -%}
+    <div class="hp-product__info">
+
+      {%- comment -%} Name {%- endcomment -%}
+      <div>
+        <h1 class="hp-product__name">{{ product.title }}</h1>
+        {%- if section.settings.tagline != blank -%}
+          <p class="hp-product__tagline">{{ section.settings.tagline }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Description {%- endcomment -%}
+      {%- if product.description != blank -%}
+        <p class="hp-product__description">{{ product.description | strip_html | truncatewords: 80 }}</p>
+      {%- endif -%}
+
+      {%- comment -%} Specs table {%- endcomment -%}
+      {%- if section.blocks.size > 0 -%}
+        <div class="hp-specs">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'spec' -%}
+              <div class="hp-specs__row" {{ block.shopify_attributes }}>
+                <span class="hp-specs__label">{{ block.settings.label }}</span>
+                <span class="hp-specs__value">{{ block.settings.value }}</span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} Price + Add to cart {%- endcomment -%}
+      {%- form 'product', product, id: 'hp-product-form', novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+        <div>
+          <div class="hp-product__price">
+            {{ product.selected_or_first_available_variant.price | money }}
+            {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+              <span class="hp-product__price--compare">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          name="add"
+          class="hp-btn"
+          {%- unless product.selected_or_first_available_variant.available -%}disabled{%- endunless -%}
+        >
+          {%- if product.selected_or_first_available_variant.available -%}
+            Add to cart
+          {%- else -%}
+            Sold out
+          {%- endif -%}
+        </button>
+
+      {%- endform -%}
+
+    </div>
+  </div>
+
+  {%- comment -%} ===== FEATURE SECTIONS (expandable, Thuono-style) ===== {%- endcomment -%}
+  {%- assign has_features = false -%}
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'feature' -%}
+      {%- assign has_features = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if has_features -%}
+    <div class="hp-features" id="hp-features">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'feature' -%}
+          <div class="hp-feature" {{ block.shopify_attributes }}>
+            <div class="hp-feature__head" role="button" tabindex="0" aria-expanded="false">
+              <h3 class="hp-feature__title">{{ block.settings.title }}</h3>
+              <span class="hp-feature__toggle" aria-hidden="true">+</span>
+            </div>
+            <div class="hp-feature__body">
+              <p class="hp-feature__text">{{ block.settings.description }}</p>
+              {%- if block.settings.image != blank -%}
+                <img
+                  class="hp-feature__image"
+                  src="{{ block.settings.image | image_url: width: 240 }}"
+                  alt="{{ block.settings.title | escape }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+</div>
+
+{%- comment -%} ===== JAVASCRIPT ===== {%- endcomment -%}
+<script>
+(function() {
+  // Gallery
+  const images = document.querySelectorAll('.hp-gallery__image');
+  const thumbs = document.querySelectorAll('.hp-gallery__thumb');
+  let current = 0;
+
+  function goTo(index) {
+    images[current].classList.remove('active');
+    thumbs[current] && thumbs[current].classList.remove('active');
+    current = (index + images.length) % images.length;
+    images[current].classList.add('active');
+    thumbs[current] && thumbs[current].classList.add('active');
+  }
+
+  thumbs.forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+      goTo(parseInt(this.dataset.index));
+    });
+  });
+
+  const prev = document.getElementById('hp-gallery-prev');
+  const next = document.getElementById('hp-gallery-next');
+  prev && prev.addEventListener('click', function() { goTo(current - 1); });
+  next && next.addEventListener('click', function() { goTo(current + 1); });
+
+  // Touch swipe on gallery
+  let touchStartX = 0;
+  const rail = document.getElementById('hp-gallery-rail');
+  if (rail) {
+    rail.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+    rail.addEventListener('touchend', function(e) {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) { diff > 0 ? goTo(current + 1) : goTo(current - 1); }
+    });
+  }
+
+  // Feature sections expand/collapse
+  document.querySelectorAll('.hp-feature__head').forEach(function(head) {
+    head.addEventListener('click', function() {
+      const feature = this.closest('.hp-feature');
+      const isOpen = feature.classList.contains('open');
+      feature.classList.toggle('open', !isOpen);
+      this.setAttribute('aria-expanded', !isOpen);
+    });
+    head.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+    });
+  });
+
+  // Nav scroll behaviour
+  const nav = document.querySelector('.hp-nav');
+  if (nav) {
+    window.addEventListener('scroll', function() {
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "HIGHPASS Product",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Product tagline",
+      "default": "Wanaka-born. Trail-tested."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Spec row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Spec label",
+          "default": "Max Pressure"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Spec value",
+          "default": "120 PSI"
+        }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature section",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature title",
+          "default": "Precision inflation: auto-stop technology"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Feature description",
+          "default": "Describe this feature in detail."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Feature illustration (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HIGHPASS Product",
+      "blocks": [
+        { "type": "spec", "settings": { "label": "Max Pressure", "value": "120 PSI" } },
+        { "type": "spec", "settings": { "label": "Motor", "value": "Brushless DC" } },
+        { "type": "spec", "settings": { "label": "Charging", "value": "USB-C" } },
+        { "type": "spec", "settings": { "label": "Inflations per charge", "value": "20+" } },
+        { "type": "spec", "settings": { "label": "Valves", "value": "Schrader, Presta" } },
+        { "type": "spec", "settings": { "label": "Auto-stop", "value": "Yes" } },
+        { "type": "spec", "settings": { "label": "Price", "value": "$99.99 NZD" } },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Precision inflation: auto-stop technology",
+            "description": "Set your target PSI and the FLOW 1 stops itself. No guesswork, no over-inflation, no fumbling with a gauge at the trailhead. The auto-stop sensor reads pressure continuously and cuts the motor at exactly your preset point. Inflate, clip in, ride."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "120 PSI brushless motor",
+            "description": "The FLOW 1 runs a brushless DC motor rated to 120 PSI — enough for road tyres, gravel, and hardtail MTB. A standard 29\" mountain bike tyre inflates in under 90 seconds. Brushless means longer motor life, quieter operation, and less heat than conventional pump motors."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "USB-C rechargeable: 20+ inflations per charge",
+            "description": "One charge handles a full week of riding. The built-in battery recharges via USB-C in under two hours and delivers 20 or more full inflations before it needs power again. Charge it on Sunday night. Don't think about it until next Sunday."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Universal valve compatibility",
+            "description": "The FLOW 1 works with both Schrader and Presta valves — the two standards used across road bikes, mountain bikes, gravel bikes, and e-bikes. Switch between valve types in seconds. No adaptor hunting, no separate purchase."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
