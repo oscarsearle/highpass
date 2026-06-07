@@ -204,11 +204,11 @@ ul, ol { list-style: none; }
 
 .hp-nav__link {
   font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
   letter-spacing: var(--track-nav);
   text-transform: uppercase;
-  color: var(--smoke);
+  color: var(--raw);
   transition: color var(--dur-micro) var(--ease-out);
   background: none;
   border: none;
@@ -216,7 +216,7 @@ ul, ol { list-style: none; }
   padding: 0;
 }
 
-.hp-nav__link:hover { color: var(--raw); }
+.hp-nav__link:hover { color: var(--smoke); }
 
 .hp-nav__cart {
   position: relative;
