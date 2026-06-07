@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="#11120D">
+    <meta name="theme-color" content="#0A0A0A">
     <meta property="og:site_name" content="HIGHPASS">
     <link rel="canonical" href="{{ canonical_url }}">
 
@@ -310,14 +310,13 @@
 
     {%- comment -%} HIGHPASS navigation {%- endcomment -%}
     <nav class="hp-nav" role="navigation" aria-label="Main navigation">
-      <a class="hp-nav__brand" href="{{ routes.root_url }}" aria-label="HIGHPASS home">
-        <svg class="hp-nav__mark" viewBox="0 0 40 24" fill="none" aria-hidden="true">
-          <polyline points="0,24 14,4 20,14 28,2 40,24" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
-        </svg>
-        <span class="hp-nav__wordmark">HIGHPASS</span>
+      <a class="hp-nav__logo" href="{{ routes.root_url }}" aria-label="HIGHPASS home">
+        <img src="{{ 'highpass-wordmark-light.png' | asset_url }}" alt="HIGHPASS">
       </a>
       <div class="hp-nav__links">
         <a class="hp-nav__link" href="{{ routes.all_products_collection_url }}">Shop</a>
+        <a class="hp-nav__link" href="/pages/faq">FAQ</a>
+        <a class="hp-nav__link" href="/pages/contact">Contact</a>
         {%- if settings.cart_type != 'drawer' -%}
           <a class="hp-nav__link" href="{{ routes.cart_url }}">Cart ({{ cart.item_count }})</a>
         {%- else -%}
@@ -336,24 +335,42 @@
 
     {%- comment -%} HIGHPASS footer {%- endcomment -%}
     <footer class="hp-footer" role="contentinfo">
-      <div class="hp-footer__brand">
-        <span class="hp-footer__wordmark">HIGHPASS</span>
-        <p class="hp-footer__tagline">Premium cycling accessories.<br>Wanaka, New Zealand.</p>
+      <div class="hp-footer__inner">
+
+        <div class="hp-footer__brand">
+          <img src="{{ 'highpass-wordmark-light.png' | asset_url }}" alt="HIGHPASS" class="hp-footer__logo">
+          <p class="hp-footer__tagline">Premium cycling accessories.<br>Wanaka, Aotearoa New Zealand.</p>
+        </div>
+
+        <div class="hp-footer__col">
+          <p class="hp-footer__col-title">Shop</p>
+          <a class="hp-footer__link" href="/products/highpass-flow-one">FLOW ONE: Electric Pump</a>
+          <a class="hp-footer__link" href="/products/highpass-loom-v1">LOOM V1: Trail Light</a>
+          <a class="hp-footer__link" href="{{ routes.all_products_collection_url }}">All products</a>
+        </div>
+
+        <div class="hp-footer__col">
+          <p class="hp-footer__col-title">Company</p>
+          <a class="hp-footer__link" href="/pages/faq">FAQ</a>
+          <a class="hp-footer__link" href="/pages/shipping">Shipping</a>
+          <a class="hp-footer__link" href="/policies/refund-policy">Returns</a>
+          <a class="hp-footer__link" href="/pages/contact">Contact</a>
+        </div>
+
+        <div class="hp-footer__col">
+          <p class="hp-footer__col-title">The dispatch</p>
+          <p class="hp-footer__tagline" style="margin-top:0;max-width:220px;">New products, trail notes, and the occasional thing worth sharing.</p>
+          <div class="hp-footer__email-row">
+            <input class="hp-footer__email-input" type="email" placeholder="Your email" aria-label="Email address for newsletter">
+            <button class="hp-btn hp-btn--secondary" type="button" style="padding:10px 16px;font-size:11px;">Join</button>
+          </div>
+        </div>
+
       </div>
-      <div>
-        <p class="hp-footer__col-title">Shop</p>
-        <a class="hp-footer__link" href="{{ routes.all_products_collection_url }}">FLOW 1: Electric Pump</a>
-      </div>
-      <div>
-        <p class="hp-footer__col-title">Info</p>
-        <a class="hp-footer__link" href="/pages/shipping">Shipping</a>
-        <a class="hp-footer__link" href="/policies/refund-policy">Returns</a>
-        <a class="hp-footer__link" href="/pages/faq">FAQ</a>
-        <a class="hp-footer__link" href="/pages/contact">Contact</a>
-      </div>
+
       <div class="hp-footer__bottom">
-        <p class="hp-footer__copy">&copy; {{ 'now' | date: '%Y' }} HIGHPASS. All rights reserved.</p>
-        <p class="hp-footer__copy">Wanaka, New Zealand</p>
+        <span class="hp-footer__copy">&copy; {{ 'now' | date: '%Y' }} HIGHPASS · NA05-20</span>
+        <span class="hp-footer__copy">OWN LANE. OWN PACE. OWN RACE.</span>
       </div>
     </footer>
 

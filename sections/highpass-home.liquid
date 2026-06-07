@@ -1,228 +1,474 @@
-{%- comment -%} HIGHPASS Homepage {%- endcomment -%}
+{%- comment -%} HIGHPASS Homepage — Design System v1 {%- endcomment -%}
 
-{%- comment -%} HERO {%- endcomment -%}
-<section class="hp-hero" aria-label="Hero">
-  {%- if section.settings.hero_image != blank -%}
-    <img
-      class="hp-hero__bg"
-      src="{{ section.settings.hero_image | image_url: width: 2000 }}"
-      srcset="{{ section.settings.hero_image | image_url: width: 800 }} 800w, {{ section.settings.hero_image | image_url: width: 1400 }} 1400w, {{ section.settings.hero_image | image_url: width: 2000 }} 2000w"
-      sizes="100vw"
-      alt="{{ section.settings.hero_image.alt | default: 'HIGHPASS FLOW 1' | escape }}"
-      loading="eager"
-    >
-  {%- else -%}
-    <div class="hp-hero__bg hp-hero__bg--placeholder"></div>
-  {%- endif -%}
-  <div class="hp-hero__overlay"></div>
-  <div class="hp-hero__content hp-container">
-    <p class="hp-hero__eyebrow">HIGHPASS FLOW 1: ELECTRIC PUMP</p>
-    <h1 class="hp-hero__headline">
-      {{- section.settings.hero_headline | default: 'THE PUMP.' -}}
-    </h1>
-    <p class="hp-hero__sub">
-      {{- section.settings.hero_sub | default: '120 PSI brushless motor. USB-C rechargeable. Auto-stop at your preset pressure.' -}}
-    </p>
-    <div class="hp-hero__actions">
-      <a href="{{ routes.all_products_collection_url }}" class="hp-btn hp-btn--primary">Order the FLOW 1</a>
-      <a href="#hp-showcase" class="hp-btn hp-btn--ghost">Learn more</a>
+{%- comment -%} HERO: full-viewport slideshow, FLOW ONE + LOOM V1 {%- endcomment -%}
+<section class="hp-hero" id="hp-hero" aria-label="Hero">
+
+  <div class="hp-hero__bgs">
+    {%- comment -%} Slide 0: FLOW ONE — full-bleed photo {%- endcomment -%}
+    <div id="hp-bg-0" class="hp-hero__slide-bg hp-hero__slide-bg--active">
+      {%- if section.settings.hero_image != blank -%}
+        <div style="position:absolute;inset:0;background-image:url({{ section.settings.hero_image | image_url: width: 2000 }});background-size:cover;background-position:center 42%;"></div>
+      {%- else -%}
+        <div style="position:absolute;inset:0;background-image:url({{ 'flow-one-hero.png' | asset_url }});background-size:cover;background-position:center 42%;"></div>
+      {%- endif -%}
     </div>
+
+    {%- comment -%} Slide 1: LOOM V1 — dark red atmospheric treatment {%- endcomment -%}
+    <div id="hp-bg-1" class="hp-hero__slide-bg">
+      <div style="position:absolute;inset:0;background-image:url({{ 'texture-red-atmosphere.png' | asset_url }});background-size:cover;background-position:center;opacity:0.8;"></div>
+      <div style="position:absolute;inset:0;background-image:url({{ 'texture-concrete.png' | asset_url }});background-size:cover;mix-blend-mode:overlay;opacity:0.5;"></div>
+      <div style="position:absolute;inset:0;background:radial-gradient(120% 90% at 68% 32%, rgba(10,10,10,0) 0%, rgba(10,10,10,0.5) 68%, rgba(10,10,10,0.92) 100%);"></div>
+    </div>
+  </div>
+
+  {%- comment -%} Legibility scrims: top for the transparent nav, bottom and left for corner type {%- endcomment -%}
+  <div class="hp-hero__scrim"></div>
+  <div class="hp-grain"></div>
+
+  {%- comment -%} Bottom-left: giant product wordmark (crossfades per slide) {%- endcomment -%}
+  <div class="hp-hero__name">
+    <div class="hp-hero__name-wrap" id="hp-name-wrap">
+      <span class="hp-hero__eyebrow" id="hp-eyebrow" style="display:none;"></span>
+      <h1 class="hp-hero__headline" id="hp-headline">FLOW ONE</h1>
+    </div>
+  </div>
+
+  {%- comment -%} Bottom-right: slide tabs (persistent) + CTAs and tagline (crossfade) {%- endcomment -%}
+  <div class="hp-hero__panel" id="hp-panel">
+
+    <div class="hp-hero__tabs">
+      <button class="hp-hero__tab active" type="button" data-slide="0">
+        <div class="hp-hero__tab-label">
+          <span class="hp-hero__tab-num">01</span>
+          <span class="hp-hero__tab-name">Flow One</span>
+        </div>
+        <div class="hp-hero__tab-track">
+          <div class="hp-hero__tab-fill"></div>
+        </div>
+      </button>
+      <button class="hp-hero__tab" type="button" data-slide="1">
+        <div class="hp-hero__tab-label">
+          <span class="hp-hero__tab-num">02</span>
+          <span class="hp-hero__tab-name">Loom V1</span>
+        </div>
+        <div class="hp-hero__tab-track">
+          <div class="hp-hero__tab-fill"></div>
+        </div>
+      </button>
+    </div>
+
+    <div class="hp-hero__ctas" id="hp-ctas">
+      <div class="hp-hero__cta-row">
+        <a href="/products/highpass-flow-one" class="hp-btn hp-btn--primary hp-btn--sm" id="hp-cta-primary">Shop Flow One</a>
+        <a href="{{ routes.all_products_collection_url }}" class="hp-btn hp-btn--secondary hp-btn--sm" id="hp-cta-secondary">See the line</a>
+      </div>
+      <p class="hp-hero__tagline" id="hp-tagline">A portable electric pump that reaches road pressure on its own. 120 PSI. USB-C rechargeable. Auto-stop at your preset pressure.</p>
+    </div>
+
   </div>
 </section>
 
-{%- comment -%} KEY SPECS STRIP {%- endcomment -%}
+{%- comment -%} SPECS STRIP {%- endcomment -%}
 <div class="hp-strip" role="list" aria-label="Key specifications">
-  <div class="hp-strip__item" role="listitem">
-    <span class="hp-strip__value">120</span>
-    <span class="hp-strip__label">PSI Max Pressure</span>
-  </div>
-  <div class="hp-strip__item" role="listitem">
-    <span class="hp-strip__value">20+</span>
-    <span class="hp-strip__label">Inflations per Charge</span>
-  </div>
-  <div class="hp-strip__item" role="listitem">
-    <span class="hp-strip__value">90s</span>
-    <span class="hp-strip__label">Fill Time (29" MTB)</span>
-  </div>
-  <div class="hp-strip__item" role="listitem">
-    <span class="hp-strip__value">USB-C</span>
-    <span class="hp-strip__label">Recharging</span>
+  <div class="hp-strip__inner">
+    <div class="hp-strip__cell" role="listitem">
+      <span class="hp-strip__figure">120 PSI</span>
+      <span class="hp-strip__label">Brushless motor</span>
+    </div>
+    <div class="hp-strip__cell" role="listitem">
+      <span class="hp-strip__figure">&lt; 90 sec</span>
+      <span class="hp-strip__label">Any tyre, inflated</span>
+    </div>
+    <div class="hp-strip__cell" role="listitem">
+      <span class="hp-strip__figure">Auto-stop</span>
+      <span class="hp-strip__label">At your preset pressure</span>
+    </div>
+    <div class="hp-strip__cell" role="listitem">
+      <span class="hp-strip__figure">USB-C</span>
+      <span class="hp-strip__label">Recharge anywhere</span>
+    </div>
   </div>
 </div>
 
-{%- comment -%} PRODUCT SHOWCASE {%- endcomment -%}
-<section class="hp-showcase" id="hp-showcase" aria-label="Product showcase">
-  <div class="hp-showcase__media">
-    {%- if section.settings.showcase_image != blank -%}
-      <img
-        class="hp-showcase__img"
-        src="{{ section.settings.showcase_image | image_url: width: 1200 }}"
-        srcset="{{ section.settings.showcase_image | image_url: width: 600 }} 600w, {{ section.settings.showcase_image | image_url: width: 1200 }} 1200w"
-        sizes="(max-width: 900px) 100vw, 50vw"
-        alt="{{ section.settings.showcase_image.alt | default: 'HIGHPASS FLOW 1' | escape }}"
-        loading="lazy"
-      >
-    {%- else -%}
-      <div class="hp-showcase__placeholder">
-        <svg class="hp-showcase__placeholder-icon" viewBox="0 0 48 48" stroke="currentColor" stroke-width="1" fill="none">
-          <rect x="4" y="10" width="40" height="28" rx="2"/>
-          <circle cx="17" cy="22" r="4"/>
-          <polyline points="4,38 16,26 24,34 32,24 44,38"/>
-        </svg>
-        <span class="hp-showcase__placeholder-label">Add product image in theme editor</span>
+{%- comment -%} SHOWCASE: THE LINE {%- endcomment -%}
+<section class="hp-showcase" id="hp-showcase" aria-label="The line">
+  <div class="hp-showcase__inner">
+
+    <div class="hp-showcase__header">
+      <h2 class="hp-showcase__title">The line</h2>
+      <span class="hp-showcase__meta">2 products · more in the works</span>
+    </div>
+
+    <div class="hp-showcase__rows">
+
+      {%- comment -%} FLOW ONE — image left {%- endcomment -%}
+      <div class="hp-showcase__row">
+        <div class="hp-showcase__media">
+          {%- if section.settings.showcase_flow_image != blank -%}
+            <img
+              class="hp-showcase__img"
+              src="{{ section.settings.showcase_flow_image | image_url: width: 1200 }}"
+              srcset="{{ section.settings.showcase_flow_image | image_url: width: 600 }} 600w, {{ section.settings.showcase_flow_image | image_url: width: 1200 }} 1200w"
+              sizes="(max-width: 900px) 100vw, 55vw"
+              alt="HIGHPASS FLOW ONE"
+              loading="lazy"
+            >
+          {%- else -%}
+            <div class="hp-showcase__placeholder">
+              <svg width="48" height="48" viewBox="0 0 48 48" stroke="currentColor" stroke-width="1" fill="none" aria-hidden="true">
+                <rect x="4" y="10" width="40" height="28" rx="2"/>
+                <circle cx="17" cy="22" r="4"/>
+                <polyline points="4,38 16,26 24,34 32,24 44,38"/>
+              </svg>
+              <span class="hp-showcase__placeholder-text">Flow One product image</span>
+            </div>
+          {%- endif -%}
+        </div>
+        <div class="hp-showcase__copy">
+          <span class="hp-showcase__kicker">The pump. Nothing else.</span>
+          <h2 class="hp-showcase__name">FLOW ONE</h2>
+          <p class="hp-showcase__desc">A portable electric pump that reaches road pressure on its own. 120 PSI brushless motor, USB-C rechargeable, auto-stop at your preset pressure. Any tyre, inflated in under 90 seconds.</p>
+          <ul class="hp-showcase__details">
+            <li class="hp-showcase__detail">
+              <span class="hp-showcase__detail-num">01</span>
+              <span>Auto-stop at your set target pressure. Set it once, walk away.</span>
+            </li>
+            <li class="hp-showcase__detail">
+              <span class="hp-showcase__detail-num">02</span>
+              <span>CNC alloy body, anodised matte black.</span>
+            </li>
+            <li class="hp-showcase__detail">
+              <span class="hp-showcase__detail-num">03</span>
+              <span>Charge it Sunday. Don't think about it until next Sunday.</span>
+            </li>
+          </ul>
+          <div class="hp-showcase__actions">
+            <a href="/products/highpass-flow-one" class="hp-btn hp-btn--primary">Shop Flow One</a>
+            <span class="hp-showcase__price">$99.99 NZD</span>
+          </div>
+        </div>
       </div>
-    {%- endif -%}
-  </div>
-  <div class="hp-showcase__content">
-    <p class="hp-section-label">FLOW 1</p>
-    <h2 class="hp-section-title">
-      {{- section.settings.showcase_title | default: 'INFLATE IN 90 SECONDS' -}}
-    </h2>
-    <p class="hp-section-body">
-      {{- section.settings.showcase_body | default: "Set your pressure. Hit the button. The FLOW 1's brushless motor pumps any tyre from flat to full in under 90 seconds. No CO2 cartridges. No arm fatigue. One tool that does the job every time." -}}
-    </p>
-    <p class="hp-price-tag">$99.99 NZD</p>
-    <a href="{{ routes.all_products_collection_url }}" class="hp-btn hp-btn--primary">Order now</a>
+
+      {%- comment -%} LOOM V1 — image right (flipped row) {%- endcomment -%}
+      <div class="hp-showcase__row hp-showcase__row--flip">
+        <div class="hp-showcase__media hp-showcase__media--dim">
+          <span class="hp-showcase__coming-tag">Coming soon</span>
+          {%- if section.settings.showcase_loom_image != blank -%}
+            <img
+              class="hp-showcase__img"
+              src="{{ section.settings.showcase_loom_image | image_url: width: 1200 }}"
+              alt="HIGHPASS LOOM V1"
+              loading="lazy"
+            >
+          {%- else -%}
+            <div class="hp-showcase__placeholder">
+              <svg width="48" height="48" viewBox="0 0 48 48" stroke="currentColor" stroke-width="1.2" fill="none" aria-hidden="true">
+                <circle cx="24" cy="22" r="9"/>
+                <line x1="24" y1="4" x2="24" y2="10"/>
+                <line x1="24" y1="34" x2="24" y2="40"/>
+                <line x1="6" y1="22" x2="12" y2="22"/>
+                <line x1="36" y1="22" x2="42" y2="22"/>
+                <line x1="11" y1="9" x2="15" y2="13"/>
+                <line x1="33" y1="31" x2="37" y2="35"/>
+                <line x1="37" y1="9" x2="33" y2="13"/>
+                <line x1="15" y1="31" x2="11" y2="35"/>
+              </svg>
+              <span class="hp-showcase__placeholder-text">Loom V1 product image</span>
+            </div>
+          {%- endif -%}
+        </div>
+        <div class="hp-showcase__copy">
+          <span class="hp-showcase__kicker">The trail light. Coming soon.</span>
+          <h2 class="hp-showcase__name">LOOM V1</h2>
+          <p class="hp-showcase__desc">LOOM V1 is a precision LED trail light for mountain and gravel riders. Beam shaped to the trail, runtime measured in rides not minutes. Built for the same trails as the FLOW ONE.</p>
+          <ul class="hp-showcase__details">
+            <li class="hp-showcase__detail">
+              <span class="hp-showcase__detail-num">01</span>
+              <span>Beam shaped to the trail, not into eyes.</span>
+            </li>
+            <li class="hp-showcase__detail">
+              <span class="hp-showcase__detail-num">02</span>
+              <span>Machined alloy heatsink body.</span>
+            </li>
+            <li class="hp-showcase__detail">
+              <span class="hp-showcase__detail-num">03</span>
+              <span>Built for mountain and gravel. Specs confirmed closer to launch.</span>
+            </li>
+          </ul>
+          <div class="hp-showcase__actions">
+            <a href="/products/highpass-loom-v1" class="hp-btn hp-btn--secondary">Notify me</a>
+            <span style="font-family:var(--font-body);font-weight:500;font-size:11px;letter-spacing:var(--track-label-sm);text-transform:uppercase;color:var(--asphalt);">Launching soon</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
 {%- comment -%} VIDEO {%- endcomment -%}
-<div class="hp-video" id="hp-video-section" aria-label="Product video">
-  {%- if section.settings.video_url != blank -%}
-    <div class="hp-video__cover"></div>
-    <div class="hp-video__play" id="hp-video-play">
-      <button class="hp-video__play-btn" aria-label="Play FLOW 1 video">
-        <svg class="hp-video__play-icon" viewBox="0 0 20 20"><polygon points="5,2 18,10 5,18"/></svg>
-      </button>
-      <span class="hp-video__label">FLOW 1 IN ACTION</span>
+<section class="hp-video" aria-label="Product video">
+  <div class="hp-video__inner">
+    <div class="hp-video__header">
+      <h2 class="hp-video__title">In under ninety seconds</h2>
+      <span class="hp-video__meta">film · 0:90</span>
     </div>
-    <iframe
-      class="hp-video__embed"
-      id="hp-video-frame"
-      src=""
-      data-src="{{ section.settings.video_url | replace: 'watch?v=', 'embed/' | replace: 'youtu.be/', 'www.youtube.com/embed/' }}?autoplay=1&rel=0"
-      allow="autoplay; fullscreen"
-      allowfullscreen
-      title="HIGHPASS FLOW 1 in action"
-    ></iframe>
-  {%- else -%}
-    <div class="hp-video__cover hp-video__cover--placeholder"></div>
-    <div class="hp-video__play" aria-hidden="true">
-      <div class="hp-video__play-btn">
-        <svg class="hp-video__play-icon" viewBox="0 0 20 20"><polygon points="5,2 18,10 5,18"/></svg>
-      </div>
-      <span class="hp-video__label">FLOW 1 IN ACTION</span>
+    <div class="hp-video__frame">
+      <div class="hp-video__hatch"></div>
+      {%- if section.settings.video_url != blank -%}
+        <div class="hp-video__play" id="hp-video-play">
+          <div class="hp-video__play-btn">
+            <svg class="hp-video__play-icon" viewBox="0 0 26 30" aria-hidden="true"><path d="M0 0 L26 15 L0 30 Z"/></svg>
+          </div>
+          <span class="hp-video__play-label">FLOW ONE IN ACTION</span>
+        </div>
+        <iframe
+          class="hp-video__embed"
+          id="hp-video-embed"
+          src=""
+          data-src="{{ section.settings.video_url | replace: 'watch?v=', 'embed/' | replace: 'youtu.be/', 'www.youtube.com/embed/' }}?autoplay=1&rel=0"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+          title="HIGHPASS FLOW ONE in action"
+        ></iframe>
+      {%- else -%}
+        <div class="hp-video__play">
+          <div class="hp-video__play-btn" aria-hidden="true">
+            <svg class="hp-video__play-icon" viewBox="0 0 26 30" aria-hidden="true"><path d="M0 0 L26 15 L0 30 Z"/></svg>
+          </div>
+          <span class="hp-video__play-label">[ Product film — drop 16:9 footage ]</span>
+        </div>
+      {%- endif -%}
     </div>
-    <span class="hp-video__placeholder-text">Add YouTube video URL in theme editor to activate</span>
-  {%- endif -%}
-</div>
+  </div>
+</section>
 
 {%- comment -%} BRAND STORY {%- endcomment -%}
 <section class="hp-story" aria-label="Brand story">
-  <div class="hp-story__media">
-    {%- if section.settings.story_image != blank -%}
-      <img
-        class="hp-story__img"
-        src="{{ section.settings.story_image | image_url: width: 1000 }}"
-        alt="{{ section.settings.story_image.alt | default: 'Wanaka, New Zealand' | escape }}"
-        loading="lazy"
-      >
-    {%- else -%}
-      <div class="hp-showcase__placeholder">
-        <svg class="hp-showcase__placeholder-icon" viewBox="0 0 48 48" stroke="currentColor" stroke-width="1.2" fill="none">
-          <polyline points="4,38 16,18 24,28 32,12 44,38"/>
-        </svg>
-        <span class="hp-showcase__placeholder-label">Add trail or Wanaka photo</span>
-      </div>
-    {%- endif -%}
-  </div>
-  <div class="hp-story__content">
-    <p class="hp-section-label">The Brand</p>
-    <h2 class="hp-section-title">BORN IN WANAKA</h2>
-    <p class="hp-section-body">HIGHPASS builds precision tools for riders who take their riding seriously. The FLOW 1 is made for cyclists who want one less thing to worry about at the trailhead. Designed and tested in the Southern Alps, New Zealand.</p>
+  <div class="hp-story__texture"></div>
+  <div class="hp-grain"></div>
+  <div class="hp-story__inner">
+    <h2 class="hp-story__headline">Built in Wanaka. <span>One thing at a time.</span></h2>
+    <div class="hp-story__body">
+      <p class="hp-story__text">HIGHPASS builds precision tools for riders. We start with one product and resolve it fully before we move to the next.</p>
+      <p class="hp-story__text">The FLOW ONE is first. LOOM V1 follows. Each one earns its place on the bike. No noise, no filler, no rush.</p>
+      <span class="hp-story__location">Wanaka · Aotearoa New Zealand</span>
+    </div>
   </div>
 </section>
 
-{%- comment -%} REVIEWS {%- endcomment -%}
-<section class="hp-reviews" aria-label="Customer reviews">
-  <div class="hp-reviews__header">
-    <h2 class="hp-section-title" style="margin-bottom:0;">WHAT RIDERS SAY</h2>
-  </div>
-  <div class="hp-reviews__grid">
-    <article class="hp-review">
-      <div class="hp-review__stars" aria-label="5 out of 5 stars">
-        {%- for i in (1..5) -%}
-          <svg class="hp-review__star" viewBox="0 0 12 12" aria-hidden="true"><polygon points="6,1 7.8,4.6 12,5.3 9,8.2 9.7,12.3 6,10.4 2.3,12.3 3,8.2 0,5.3 4.2,4.6"/></svg>
-        {%- endfor -%}
+{%- comment -%} REVIEWS (placeholder skeleton — real reviews replace this post-launch) {%- endcomment -%}
+<section class="hp-reviews" aria-label="From the road">
+  <div class="hp-reviews__inner">
+    <div class="hp-reviews__header">
+      <h2 class="hp-reviews__title">From the road</h2>
+      <span class="hp-reviews__status">Reviews on the way</span>
+    </div>
+    <div class="hp-reviews__grid">
+      {%- for i in (1..3) -%}
+      <div class="hp-review">
+        <div class="hp-review__stars" aria-hidden="true">
+          {%- for s in (1..5) -%}
+          <svg class="hp-review__star" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2 L15 9 L22 9.5 L16.5 14 L18.5 21 L12 17 L5.5 21 L7.5 14 L2 9.5 L9 9 Z"/>
+          </svg>
+          {%- endfor -%}
+        </div>
+        <div class="hp-review__skeleton">
+          <span class="hp-review__skeleton-line" style="width:100%;"></span>
+          <span class="hp-review__skeleton-line" style="width:82%;"></span>
+          <span class="hp-review__skeleton-line" style="width:64%;"></span>
+        </div>
+        <span class="hp-review__author">Awaiting first rides</span>
       </div>
-      <p class="hp-review__text">"Finally a pump that fits in my jersey pocket and actually works. 120 PSI is no joke. Had my road tyres dialled in under 60 seconds."</p>
-      <p class="hp-review__author">J. Morrison</p>
-      <p class="hp-review__location">Auckland, NZ</p>
-      <p class="hp-review__badge">Verified purchase</p>
-    </article>
-    <article class="hp-review">
-      <div class="hp-review__stars" aria-label="5 out of 5 stars">
-        {%- for i in (1..5) -%}
-          <svg class="hp-review__star" viewBox="0 0 12 12" aria-hidden="true"><polygon points="6,1 7.8,4.6 12,5.3 9,8.2 9.7,12.3 6,10.4 2.3,12.3 3,8.2 0,5.3 4.2,4.6"/></svg>
-        {%- endfor -%}
-      </div>
-      <p class="hp-review__text">"Charged it two weeks ago. Still going strong. The auto-stop is genuinely useful. No more checking the gauge every few seconds."</p>
-      <p class="hp-review__author">K. Tahu</p>
-      <p class="hp-review__location">Queenstown, NZ</p>
-      <p class="hp-review__badge">Verified purchase</p>
-    </article>
-    <article class="hp-review">
-      <div class="hp-review__stars" aria-label="5 out of 5 stars">
-        {%- for i in (1..5) -%}
-          <svg class="hp-review__star" viewBox="0 0 12 12" aria-hidden="true"><polygon points="6,1 7.8,4.6 12,5.3 9,8.2 9.7,12.3 6,10.4 2.3,12.3 3,8.2 0,5.3 4.2,4.6"/></svg>
-        {%- endfor -%}
-      </div>
-      <p class="hp-review__text">"Picked one up before a gravel event. Didn't use it on the day, which is exactly the point. Knowing it's in the bag changes how you ride."</p>
-      <p class="hp-review__author">S. Flanagan</p>
-      <p class="hp-review__location">Christchurch, NZ</p>
-      <p class="hp-review__badge">Verified purchase</p>
-    </article>
+      {%- endfor -%}
+    </div>
+    <p class="hp-reviews__note">First FLOW ONEs ship soon. Real reviews land here once they are out on the road.</p>
   </div>
 </section>
 
-{%- comment -%} CTA STRIP {%- endcomment -%}
-<section class="hp-cta" aria-label="Shop">
-  <div class="hp-cta__inner hp-container">
-    <h2 class="hp-cta__title">READY.</h2>
-    <p class="hp-cta__sub">Free delivery on all NZ orders. 30-day returns.</p>
-    <a href="{{ routes.all_products_collection_url }}" class="hp-btn hp-btn--primary">Buy the FLOW 1</a>
+{%- comment -%} CLOSING CTA {%- endcomment -%}
+<section class="hp-closing" aria-label="Shop now">
+  <div class="hp-closing__texture"></div>
+  <div class="hp-closing__scrim"></div>
+  <div class="hp-grain"></div>
+  <div class="hp-closing__inner">
+    <h2 class="hp-closing__headline">Get the Flow One</h2>
+    <p class="hp-closing__sub">$99.99 NZD · Free tracked delivery, NZ-wide</p>
+    <div class="hp-closing__actions">
+      <a href="/products/highpass-flow-one" class="hp-btn hp-btn--primary">Shop Flow One</a>
+      <a href="/products/highpass-loom-v1" class="hp-btn hp-btn--secondary">See Loom V1</a>
+    </div>
   </div>
 </section>
+
+{%- comment -%} NEXT TEASER: LOOM V1 {%- endcomment -%}
+<a class="hp-teaser" href="/products/highpass-loom-v1" aria-label="LOOM V1: the trail light, coming soon">
+  <div class="hp-teaser__inner">
+    <div>
+      <span class="hp-teaser__eyebrow">Next from HIGHPASS</span>
+      <span class="hp-teaser__name">Loom V1: the trail light</span>
+    </div>
+    <span class="hp-teaser__arrow">
+      Coming soon
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12 H19"/><path d="M13 6 L19 12 L13 18"/></svg>
+    </span>
+  </div>
+</a>
 
 <script>
-(function() {
+(function () {
   'use strict';
 
+  var DURATION = 10000;
+  var slides = [
+    {
+      name: 'FLOW ONE',
+      eyebrow: null,
+      tagline: 'A portable electric pump that reaches road pressure on its own. 120 PSI. USB-C rechargeable. Auto-stop at your preset pressure.',
+      primaryLabel: 'Shop Flow One',
+      primaryHref: '/products/highpass-flow-one',
+      secondaryLabel: 'See the line',
+      secondaryHref: '{{ routes.all_products_collection_url }}'
+    },
+    {
+      name: 'LOOM V1',
+      eyebrow: 'Coming soon',
+      tagline: 'A precision LED trail light. Beam shaped to the trail, runtime measured in rides not minutes. Launching soon.',
+      primaryLabel: 'Notify me',
+      primaryHref: '/products/highpass-loom-v1',
+      secondaryLabel: 'See the line',
+      secondaryHref: '{{ routes.all_products_collection_url }}'
+    }
+  ];
+
+  var current = 0;
+  var paused = false;
+  var timer = null;
+  var switching = false;
+
+  var bgs = [document.getElementById('hp-bg-0'), document.getElementById('hp-bg-1')];
+  var nameWrap = document.getElementById('hp-name-wrap');
+  var eyebrowEl = document.getElementById('hp-eyebrow');
+  var headlineEl = document.getElementById('hp-headline');
+  var ctasEl = document.getElementById('hp-ctas');
+  var ctaPrimary = document.getElementById('hp-cta-primary');
+  var ctaSecondary = document.getElementById('hp-cta-secondary');
+  var taglineEl = document.getElementById('hp-tagline');
+  var tabs = document.querySelectorAll('.hp-hero__tab');
+  var panel = document.getElementById('hp-panel');
+
+  function restartFill(tab) {
+    var fill = tab.querySelector('.hp-hero__tab-fill');
+    fill.style.animation = 'none';
+    void fill.offsetWidth;
+    fill.style.animation = '';
+  }
+
+  function switchTo(next) {
+    if (switching || next === current) return;
+    switching = true;
+
+    nameWrap.classList.add('fading');
+    ctasEl.classList.add('fading');
+
+    setTimeout(function () {
+      var slide = slides[next];
+      current = next;
+
+      if (slide.eyebrow) {
+        eyebrowEl.textContent = slide.eyebrow;
+        eyebrowEl.style.display = '';
+      } else {
+        eyebrowEl.style.display = 'none';
+      }
+      headlineEl.textContent = slide.name;
+      taglineEl.textContent = slide.tagline;
+      ctaPrimary.textContent = slide.primaryLabel;
+      ctaPrimary.href = slide.primaryHref;
+      ctaSecondary.textContent = slide.secondaryLabel;
+      ctaSecondary.href = slide.secondaryHref;
+
+      bgs.forEach(function (bg, i) {
+        bg.classList.toggle('hp-hero__slide-bg--active', i === next);
+      });
+
+      tabs.forEach(function (tab, i) {
+        tab.classList.toggle('active', i === next);
+        if (i === next) restartFill(tab);
+      });
+
+      nameWrap.classList.remove('fading');
+      ctasEl.classList.remove('fading');
+      switching = false;
+    }, 240);
+  }
+
+  function startTimer() {
+    clearTimeout(timer);
+    if (!paused) {
+      timer = setTimeout(function () {
+        switchTo((current + 1) % slides.length);
+        startTimer();
+      }, DURATION);
+    }
+  }
+
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener('click', function () {
+      clearTimeout(timer);
+      switchTo(i);
+      if (!paused) startTimer();
+    });
+  });
+
+  if (panel) {
+    panel.addEventListener('mouseenter', function () {
+      paused = true;
+      clearTimeout(timer);
+      tabs.forEach(function (tab) {
+        if (tab.classList.contains('active')) {
+          tab.querySelector('.hp-hero__tab-fill').style.animationPlayState = 'paused';
+        }
+      });
+    });
+    panel.addEventListener('mouseleave', function () {
+      paused = false;
+      tabs.forEach(function (tab) {
+        if (tab.classList.contains('active')) {
+          tab.querySelector('.hp-hero__tab-fill').style.animationPlayState = 'running';
+        }
+      });
+      startTimer();
+    });
+  }
+
   {%- if section.settings.video_url != blank -%}
-  var playBtn = document.getElementById('hp-video-play');
-  var frame = document.getElementById('hp-video-frame');
-  if (playBtn && frame) {
-    playBtn.addEventListener('click', function() {
-      frame.src = frame.dataset.src;
-      frame.style.display = 'block';
-      playBtn.style.display = 'none';
+  var videoPlay = document.getElementById('hp-video-play');
+  var videoEmbed = document.getElementById('hp-video-embed');
+  if (videoPlay && videoEmbed) {
+    videoPlay.addEventListener('click', function () {
+      videoEmbed.src = videoEmbed.dataset.src;
+      videoEmbed.style.display = 'block';
+      videoPlay.style.display = 'none';
     });
   }
   {%- endif -%}
 
   var nav = document.querySelector('.hp-nav');
   if (nav) {
-    var onScroll = function() { nav.classList.toggle('is-scrolled', window.scrollY > 10); };
+    var onScroll = function () { nav.classList.toggle('is-scrolled', window.scrollY > 10); };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
+
+  startTimer();
 })();
 </script>
 
 {% schema %}
 {
   "name": "HIGHPASS Home",
-  "tag": "section",
   "settings": [
     {
       "type": "header",
@@ -231,42 +477,24 @@
     {
       "type": "image_picker",
       "id": "hero_image",
-      "label": "Hero background image",
-      "info": "Recommended: 2000px wide, landscape, dark trail or product shot"
-    },
-    {
-      "type": "text",
-      "id": "hero_headline",
-      "label": "Hero headline",
-      "default": "THE PUMP."
-    },
-    {
-      "type": "text",
-      "id": "hero_sub",
-      "label": "Hero subtext",
-      "default": "120 PSI brushless motor. USB-C rechargeable. Auto-stop at your preset pressure."
+      "label": "FLOW ONE hero image",
+      "info": "Recommended: 2000px wide, dark trail or product shot. Defaults to flow-one-hero.png asset."
     },
     {
       "type": "header",
-      "content": "Product Showcase"
+      "content": "Showcase images"
     },
     {
       "type": "image_picker",
-      "id": "showcase_image",
-      "label": "Showcase product image",
-      "info": "Recommended: square or portrait, product on dark background"
+      "id": "showcase_flow_image",
+      "label": "FLOW ONE showcase image",
+      "info": "4:3 ratio, product on dark background"
     },
     {
-      "type": "text",
-      "id": "showcase_title",
-      "label": "Showcase heading",
-      "default": "INFLATE IN 90 SECONDS"
-    },
-    {
-      "type": "textarea",
-      "id": "showcase_body",
-      "label": "Showcase body copy",
-      "default": "Set your pressure. Hit the button. The FLOW 1's brushless motor pumps any tyre from flat to full in under 90 seconds. No CO2 cartridges. No arm fatigue. One tool that does the job every time."
+      "type": "image_picker",
+      "id": "showcase_loom_image",
+      "label": "LOOM V1 showcase image",
+      "info": "4:3 ratio, product on dark background"
     },
     {
       "type": "header",
@@ -276,17 +504,7 @@
       "type": "url",
       "id": "video_url",
       "label": "YouTube video URL",
-      "info": "Paste a YouTube URL. Leave blank to hide this section."
-    },
-    {
-      "type": "header",
-      "content": "Brand Story"
-    },
-    {
-      "type": "image_picker",
-      "id": "story_image",
-      "label": "Story image",
-      "info": "Recommended: landscape, Wanaka or trail photo"
+      "info": "Paste a YouTube URL. Leave blank to show the placeholder."
     }
   ],
   "presets": [
