@@ -204,7 +204,7 @@ ul, ol { list-style: none; }
 
 .hp-nav__link {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: var(--track-nav);
   text-transform: uppercase;
