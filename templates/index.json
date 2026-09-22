@@ -1,14 +1,24 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "highpass_home": {
       "type": "highpass-home",
       "settings": {
-        "hero_headline": "THE PUMP.",
-        "hero_sub": "120 PSI brushless motor. USB-C rechargeable. Auto-stop at your preset pressure.",
-        "showcase_title": "INFLATE IN 90 SECONDS",
-        "showcase_body": "Set your pressure. Hit the button. The FLOW 1's brushless motor pumps any tyre from flat to full in under 90 seconds. No CO2 cartridges. No arm fatigue. One tool that does the job every time."
+        "showcase_flow_image": "shopify://shop_images/pump_8b3d0490-3490-43f7-b4ea-52045277e51e.png",
+        "showcase_loom_image": "shopify://shop_images/light.png",
+        "video_url": ""
       }
     }
   },
-  "order": ["highpass_home"]
+  "order": [
+    "highpass_home"
+  ]
 }
